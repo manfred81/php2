@@ -1,0 +1,17 @@
+{
+    "name": "php2/geekbrains",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Igor"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.20"
+    }
+}
