@@ -1,5 +1,5 @@
 {
-    "name": "php2/geekbrains",
+    "name": "php2/src",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "fakerphp/faker": "^1.20"
+        "fakerphp/faker": "^1.20",
+        "symfony/polyfill-uuid": "^1.26"
     }
 }

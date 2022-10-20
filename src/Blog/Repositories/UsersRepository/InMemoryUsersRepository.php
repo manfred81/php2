@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Blog\Repositories;
+namespace App\Blog\Repositories\UsersRepository;
 
 use App\Blog\Exception\UserNotFoundException;
 use App\Blog\User;
+use App\Blog\UUID;
 
-class InMemoryUsersRepository
+class InMemoryUsersRepository 
 {
     private array $users = [];
 
@@ -14,13 +15,13 @@ class InMemoryUsersRepository
         $this->users[] = $user;
     }
 
-    public function get(int $id): User
+    public function get(UUID $uuid): User
     {
         foreach ($this->users as $user) {
-            if ($user->id() === $id) {
+            if ($user->$uuid() === $uuid) {
                 return $user;
             }
         }
-        throw new UserNotFoundException("User not found: $id");
+        throw new UserNotFoundException("User not found: $uuid");
     }
 }
