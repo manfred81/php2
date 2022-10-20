@@ -1,63 +1,24 @@
 <?php
 
-use App\Blog\Comment;
-use App\Blog\Exception\UserNotFoundException;
-use App\Person\Name;
-use App\Person\Person;
-use App\Blog\Repositories\InMemoryUsersRepository;
-
-use App\Blog\Post;
+use App\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use App\Blog\User;
+use App\Blog\UUID;
+use App\Person\Name;
 
-require_once __DIR__ . '/vendor/autoload.php';
+include __DIR__ . '/vendor/autoload.php';
 
-$faker = Faker\Factory::create('ru_RU');
 
-// echo $faker->name() . PHP_EOL;
-// echo $faker->realText(rand(100, 200)) . PHP_EOL;
+$connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
 
-$name = new Name(
-    $faker->firstName('female'),
-    $faker->lastName()
-);
+//Создаём объект репозитория
+$usersRepository = new SqliteUsersRepository($connection);
+//Добавляем в репозиторий несколько пользователей
 
-$user = new User(
-    $faker->randomDigitNotNull(),
-    $name,
-    $faker->sentence(1)
-);
-
-$route = $argv[1] ?? null;
-
-switch ($route) {
-    case "user":
-        echo $user;
-        break;
-    case "post":
-        $post = new Post(
-            $faker->randomDigitNotNull(),
-            $user,
-            $faker->realText(rand (50,100))
-        );
-        echo $post;
-        break;
-    case "comment":
-        $post = new Post(
-            $faker->randomDigitNotNull(),
-            $user,
-            $faker->realText(rand (50,100))
-        );
-        $comment = new Comment(
-            $faker->randomDigitNotNull(),
-            $user,
-            $post,
-            $faker->realText(rand (50,100))
-        );
-        echo $comment;
-
-        break;
-    default:
-        echo "error";
+// $usersRepository->save(new User(UUID::random(), new Name('Vano', 'Nikitin'), "admin"));
+// $usersRepository->save(new User(UUID::random(), new Name('Anna', 'Petrova'), "user"));
+// $usersRepository->save(new User(UUID::random(), new Name('Anna', 'Petrova'), "user"));
+try{
+   echo $usersRepository->getByUsername('admin');
+} catch (Exception $e){
+    echo $e->getMessage();
 }
-
-
