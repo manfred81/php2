@@ -6,17 +6,17 @@ namespace App\Blog;
 class Comment
 {
     
-    private int $id;
-    private User $user;
+    private UUID $uuid;
+    private UUID $user;
     private Post $post;
     private string $text;
 
     /**
      * Get the value of id
      */
-    public function getId()
+    public function uuid(): UUID
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     /**

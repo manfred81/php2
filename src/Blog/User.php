@@ -3,26 +3,28 @@
 namespace App\Blog;
 
 use App\Person\Name;
-use App\Blog\UUID;
+
 
 class User
-{
+{   
     private UUID $uuid;
     private Name $name;
     private string $username;
 
-    public function __construct(UUID $uuid, Name $name, string $username)
-    {
+    public function __construct(UUID $uuid, Name $name, string $login)
+       {
         $this->uuid = $uuid;
         $this->name = $name;
-        $this->username = $username;
+        $this->username = $login;
     }
+
+
     public function __toString()
     {
         return "Юзер $this->uuid с именем $this->name  и логином $this->username." . PHP_EOL;
     }
-
-    /**
+     
+ /**
      * Get the value of id
      */
 
@@ -76,4 +78,24 @@ class User
 
         return $this;
     }
+
+        /**
+         * Get the value of login
+         */ 
+        public function getLogin()
+        {
+                return $this->login;
+        }
+
+        /**
+         * Set the value of login
+         *
+         * @return  self
+         */ 
+        public function setLogin($login)
+        {
+                $this->login = $login;
+
+                return $this;
+        }
 }

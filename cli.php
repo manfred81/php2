@@ -1,24 +1,50 @@
 <?php
 
+use App\Blog\Commands\Arguments;
+use App\Blog\Commands\CreateUserCommand;
+use App\Blog\Post;
+use App\Blog\Repositories\PostsRepository\SqlitePostsRepository;
 use App\Blog\Repositories\UsersRepository\SqliteUsersRepository;
-use App\Blog\User;
 use App\Blog\UUID;
-use App\Person\Name;
+
 
 include __DIR__ . '/vendor/autoload.php';
 
 
 $connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
 
-//Создаём объект репозитория
 $usersRepository = new SqliteUsersRepository($connection);
-//Добавляем в репозиторий несколько пользователей
+$postssRepository = new SqlitePostsRepository($connection);
 
-// $usersRepository->save(new User(UUID::random(), new Name('Vano', 'Nikitin'), "admin"));
-// $usersRepository->save(new User(UUID::random(), new Name('Anna', 'Petrova'), "user"));
-// $usersRepository->save(new User(UUID::random(), new Name('Anna', 'Petrova'), "user"));
-try{
-   echo $usersRepository->getByUsername('admin');
-} catch (Exception $e){
+try {
+
+    $user = $usersRepository->get(new UUID('123'));
+
+    $post = $postssRepository->get(new UUID(''));
+    
+
+    // $post = new Post(
+    //     UUID::random(),
+    //     $user,
+    //     'Заголовок',
+    //     'Текст',
+    // );
+} catch (Exception $e) {
     echo $e->getMessage();
 }
+
+
+
+
+
+
+
+var_dump($user);
+
+// $command = new CreateUserCommand($usersRepository);
+
+// try{
+//     $command->handle(Arguments::fromArgv($argv));
+// } catch (Exception $e){
+//     echo $e->getMessage();
+// }
