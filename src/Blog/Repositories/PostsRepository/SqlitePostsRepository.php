@@ -6,14 +6,15 @@ use App\Blog\Exception\PostNotFoundException;
 use App\Blog\Post;
 use App\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use App\Blog\UUID;
-
+use PDO;
+use PDOStatement;
 
 class SqlitePostsRepository
 {
 
-    private \PDO $connection;
+    private PDO $connection;
 
-    public function __construct(\PDO $connection)
+    public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
@@ -27,7 +28,7 @@ class SqlitePostsRepository
 
 
         $statement->execute([
-            'uuid' => $post->getUuid(),
+            'uuid' => $post->uuid(),
             'autor_uuid' => $post->getUser()->uuid(),
             'title' => $post->getTitle(),
             'text' => $post->getText(),
@@ -44,9 +45,9 @@ class SqlitePostsRepository
 
         return $this->getPost($statement, $uuid);
     }
-    private function getPost(\PDOStatement $statement, string $postUuId): Post
+    private function getPost(PDOStatement $statement, string $postUuId): Post
     {
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($result === false) {
             throw new PostNotFoundException(

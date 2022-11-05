@@ -20,7 +20,7 @@ try {
 
     $user = $usersRepository->get(new UUID('123'));
 
-    $post = $postssRepository->get(new UUID(""));
+    $post = $postssRepository->get(new UUID(''));
     
 
     // $post = new Post(

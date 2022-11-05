@@ -23,10 +23,6 @@
     },
     "scripts": {
         "test": "phpunit tests --testdox --colors"
-        },
-    "config": {
-        "platform": {
-            "php": "7.4.30"
         }
-    }
+   
 }

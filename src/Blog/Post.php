@@ -81,7 +81,7 @@ class Post
     /**
      * Get the value of uuid
      */
-    public function getUuid(): UUID
+    public function uuid(): UUID
     {
         return $this->uuid;
     }
