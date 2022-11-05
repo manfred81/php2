@@ -7,24 +7,24 @@ use App\Blog\Exception\UserNotFoundException;
 use App\Blog\User;
 use App\Blog\UUID;
 use App\Person\Name;
-use \PDO;
-use \PDOStatement;
+use PDO;
+use PDOStatement;
 
-class SqliteUsersRepository
+class SqliteUsersRepository implements UsersRepositoryInterface
 {
 
-    private PDO $connection;
-
-    public function __construct(PDO $connection)
-    {
-        $this->connection = $connection;
-    }
+    public function __construct(private PDO $connection)
+     {
+        }
 
     public function save(User $user): void
+        
     {
 
         $statement = $this->connection->prepare(
-            'INSERT INTO users (first_name, last_name, uuid, username) VALUES (:first_name, :last_name, :uuid, :username)'
+            'INSERT INTO users (uuid, username, first_name, last_name)
+            VALUES (:uuid, :username, :first_name, :last_name)'
+            
         );
         // Выполняем запрос с конкретными значениями
         $statement->execute([
@@ -42,13 +42,7 @@ class SqliteUsersRepository
             'SELECT * FROM users WHERE uuid = ?'
         );
         $statement->execute([(string)$uuid]);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        // Бросаем исключение, если пользователь не найден
-        if ($result === false) {
-            throw new UserNotFoundException(
-                "Cannot get user: $uuid"
-            );
-        }
+        
         return $this->getUser($statement, $uuid);
     }
 
@@ -66,7 +60,7 @@ class SqliteUsersRepository
 
     private function getUser(PDOStatement $statement, string $errorstring): User
     {
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
             throw new UserNotFoundException(
                 "Connot find user: $errorstring"

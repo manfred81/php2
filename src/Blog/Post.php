@@ -6,24 +6,14 @@ namespace App\Blog;
 
 class Post
 {
-    private int $id;
-    private User $user;
-    private string $text;
 
     public function __construct(
 
-        int $id,
-        User $user,
-        string $text
+        private UUID $uuid,
+        private User $user,
+        private string $text,
+        private string $title,
     ) {
-        $this->id = $id;
-        $this->text = $text;
-        $this->author = $user;
-    }
-
-    public function __toString()
-    {
-        return $this->user . ' пишет:' . $this->text . PHP_EOL;
     }
 
     /**
@@ -84,6 +74,44 @@ class Post
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of uuid
+     */
+    public function getUuid(): UUID
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Set the value of uuid
+     *
+     * @return  self
+     */
+    public function setUuid(UUID $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * Get the value of title
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @return  self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
         return $this;
     }
