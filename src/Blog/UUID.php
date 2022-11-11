@@ -2,7 +2,7 @@
 
 namespace App\Blog;
 
-use App\Blog\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 class UUID
 

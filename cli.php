@@ -11,7 +11,7 @@ use App\Blog\UUID;
 include __DIR__ . '/vendor/autoload.php';
 
 
-$connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
+$connection = new PDO('sqlite:' . __DIR__ . 'blog.sqlite');
 
 $usersRepository = new SqliteUsersRepository($connection);
 $postssRepository = new SqlitePostsRepository($connection);
@@ -20,8 +20,8 @@ try {
 
     $user = $usersRepository->get(new UUID('123'));
 
-    $post = $postssRepository->get(new UUID(""));
-    
+    $post = $postssRepository->get(new UUID(''));
+
 
     // $post = new Post(
     //     UUID::random(),
@@ -39,7 +39,7 @@ try {
 
 
 
-var_dump($user);
+print_r($user);
 
 // $command = new CreateUserCommand($usersRepository);
 
