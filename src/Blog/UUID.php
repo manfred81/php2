@@ -2,13 +2,13 @@
 
 namespace App\Blog;
 
-use App\Blog\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 class UUID
 
 {
 
-    public function __construct(string $uuidString)
+    public function __construct(private string $uuidString)
     {
         $this->uuidString = $uuidString;
 
