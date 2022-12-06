@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Blog\Exception;
-
-use App\Blog\Exceptions\AppException;
+namespace GeekBrains\LevelTwo\Blog\Exceptions;
 
 class PostNotFoundException extends AppException
 {
+
 }

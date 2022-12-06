@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Blog\UniTests\Commands;
+namespace GeekBrains\LevelTwo\Blog\UnitTests\Commands;
 
-use App\Blog\Commands\Arguments;
-use App\Blog\Exceptions\ArgumentsException;
+use GeekBrains\LevelTwo\Blog\Commands\Arguments;
+use GeekBrains\LevelTwo\Blog\Exceptions\ArgumentsException;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentsTest extends TestCase
@@ -11,39 +11,43 @@ class ArgumentsTest extends TestCase
     public function testItReturnsArgumentsValueByName(): void
     {
         // Подготовка
-        $arguments = new Arguments(['some_key' => 'some_value']);
+        $arguments = new Arguments(['some_key' => 123]);
+
         // Действие
         $value = $arguments->get('some_key');
+
         // Проверка
-        $this->assertEquals('some_value', $value);
+        $this->assertSame('123', $value);
+        $this->assertIsString($value);
     }
 
-    // public function testItThrowsAnExceptionWhenArgumentIsAbsent(): void
-    // {
-    //     // Подготавливаем объект с пустым набором данных
-    //     $arguments = new Arguments([]);
-    //     // Описываем тип ожидаемого исключения
-    //     $this->expectException(ArgumentsException::class);
-    //     // и его сообщение
-    //     $this->expectExceptionMessage("No such argument: some_key");
-    //     // Выполняем действие, приводящее к выбрасыванию исключения
-    //     $arguments->get('some_key');
-    // }
+    public function testItThrowsAnExceptionWhenArgumentIsAbsent(): void
+    {
+        // Подготавливаем объект с пустым набором данных
+        $arguments = new Arguments([]);
 
-   /**
-* @dataProvider argumentsProvider
-*/
+        // Описываем тип ожидаемого исключения
+        $this->expectException(ArgumentsException::class);
 
-    public function testItConvertsArgumentsToStrings(
-        $inputValue,
-        $expectedValue
-    ): void {
-        // Подставляем первое значение из тестового набора
+        // и его сообщение
+        $this->expectExceptionMessage("No such argument: some_key");
+
+        // Выполняем действие, приводящее к выбрасыванию исключения
+        $arguments->get('some_key');
+    }
+
+    /**
+     * @dataProvider argumentsProvider
+     * @throws ArgumentsException
+     */
+    public function testItConvertsArgumentsToStrings($inputValue, $expectedValue): void
+    {
         $arguments = new Arguments(['some_key' => $inputValue]);
         $value = $arguments->get('some_key');
-        // Сверяем со вторым значением из тестового набора
         $this->assertEquals($expectedValue, $value);
     }
+
+    // Провайдер данных
     public function argumentsProvider(): iterable
     {
         return [

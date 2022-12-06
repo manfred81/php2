@@ -1,50 +1,19 @@
 <?php
 
-use App\Blog\Commands\Arguments;
-use App\Blog\Commands\CreateUserCommand;
-use App\Blog\Post;
-use App\Blog\Repositories\PostsRepository\SqlitePostsRepository;
-use App\Blog\Repositories\UsersRepository\SqliteUsersRepository;
-use App\Blog\UUID;
+use GeekBrains\LevelTwo\Blog\Commands\Arguments;
+use GeekBrains\LevelTwo\Blog\Commands\CreateUserCommand;
+use GeekBrains\LevelTwo\Blog\Exceptions\AppException;
 
 
-include __DIR__ . '/vendor/autoload.php';
+// Подключаем файл bootstrap.php
+// и получаем настроенный контейнер
+$container = require __DIR__ . '/bootstrap.php';
 
-
-$connection = new PDO('sqlite:' . __DIR__ . 'blog.sqlite');
-
-$usersRepository = new SqliteUsersRepository($connection);
-$postssRepository = new SqlitePostsRepository($connection);
+// При помощи контейнера создаём команду
+$command = $container->get(CreateUserCommand::class);
 
 try {
-
-    $user = $usersRepository->get(new UUID('123'));
-
-    $post = $postssRepository->get(new UUID(''));
-
-
-    // $post = new Post(
-    //     UUID::random(),
-    //     $user,
-    //     'Заголовок',
-    //     'Текст',
-    // );
-} catch (Exception $e) {
-    echo $e->getMessage();
+    $command->handle(Arguments::fromArgv($argv));
+} catch (AppException $e) {
+    echo "{$e->getMessage()}\n";
 }
-
-
-
-
-
-
-
-print_r($user);
-
-// $command = new CreateUserCommand($usersRepository);
-
-// try{
-//     $command->handle(Arguments::fromArgv($argv));
-// } catch (Exception $e){
-//     echo $e->getMessage();
-// }

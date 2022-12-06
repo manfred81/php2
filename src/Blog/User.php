@@ -1,38 +1,35 @@
 <?php
+namespace GeekBrains\LevelTwo\Blog;
 
-namespace App\Blog;
-
-use App\Person\Name;
-
+use GeekBrains\LevelTwo\Person\Name;
 
 class User
-{   
+{
     private UUID $uuid;
     private Name $name;
     private string $username;
 
+    /**
+     * @param UUID $uuid
+     * @param Name $name
+     * @param string $login
+     */
     public function __construct(UUID $uuid, Name $name, string $login)
-       {
+    {
         $this->uuid = $uuid;
         $this->name = $name;
         $this->username = $login;
     }
 
-
-    public function __toString()
+    public function __toString(): string
     {
-        return "Юзер $this->uuid с именем $this->name  и логином $this->username." . PHP_EOL;
+        return "Юзер $this->uuid с именем $this->name и логином $this->username." . PHP_EOL;
     }
-     
- /**
-     * Get the value of id
-     */
-
 
     /**
-     * Get the value of uuid
+     * @return UUID
      */
-    public function uuid()
+    public function uuid(): UUID
     {
         return $this->uuid;
     }
@@ -40,62 +37,36 @@ class User
 
 
     /**
-     * Get the value of name
+     * @return Name
      */
-    public function name()
+    public function name(): Name
     {
         return $this->name;
     }
 
     /**
-     * Set the value of name
-     *
-     * @return  self
+     * @param Name $name
      */
-    public function setName($name)
+    public function setName(Name $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * Get the value of username
+     * @return string
      */
-    public function username()
+    public function username(): string
     {
         return $this->username;
     }
 
     /**
-     * Set the value of username
-     *
-     * @return  self
+     * @param string $username
      */
-    public function setUsername($username)
+    public function setUsername(string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
-        /**
-         * Get the value of login
-         */ 
-        public function getLogin()
-        {
-                return $this->login;
-        }
 
-        /**
-         * Set the value of login
-         *
-         * @return  self
-         */ 
-        public function setLogin($login)
-        {
-                $this->login = $login;
-
-                return $this;
-        }
 }

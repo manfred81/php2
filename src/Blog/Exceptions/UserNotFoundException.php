@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Blog\Exception;
+namespace GeekBrains\LevelTwo\Blog\Exceptions;
 
-
-class UserNotFoundException
+class UserNotFoundException extends AppException
 {
-}
 
+}

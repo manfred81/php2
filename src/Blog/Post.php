@@ -1,95 +1,31 @@
 <?php
 
-namespace App\Blog;
-
+namespace GeekBrains\LevelTwo\Blog;
 
 
 class Post
 {
 
+
     public function __construct(
-
-        private UUID $uuid,
-        private User $user,
-        private string $text,
+        private UUID   $uuid,
+        private User   $user,
         private string $title,
-    ) {
-    }
-
-    /**
-     * Get the value of id
-     */
-    public function id()
+        private string $text,
+    )
     {
-        return $this->id;
     }
 
     /**
-     * Set the value of id
-     *
-     * @return  self
+     * @return UUID
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Get the value of text
-     */
-    public function getText()
-    {
-        return $this->text;
-    }
-
-    /**
-     * Set the value of text
-     *
-     * @return  self
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of user
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set the value of user
-     *
-     * @return  self
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of uuid
-     */
-    public function getUuid(): UUID
+    public function uuid(): UUID
     {
         return $this->uuid;
     }
 
     /**
-     * Set the value of uuid
-     *
-     * @return  self
+     * @param UUID $uuid
      */
     public function setUuid(UUID $uuid): void
     {
@@ -97,7 +33,7 @@ class Post
     }
 
     /**
-     * Get the value of title
+     * @return string
      */
     public function getTitle(): string
     {
@@ -105,14 +41,68 @@ class Post
     }
 
     /**
-     * Set the value of title
-     *
-     * @return  self
+     * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
 
+
+
+    /**
+     * @return int
+     */
+    public function id(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setText(string $text): Post
+    {
+        $this->text = $text;
         return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->user . ' пишет: ' . $this->text . PHP_EOL;
     }
 }

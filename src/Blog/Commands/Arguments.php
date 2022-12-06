@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Blog\Commands;
+namespace GeekBrains\LevelTwo\Blog\Commands;
 
-use App\Blog\Exceptions\ArgumentsException;
+use GeekBrains\LevelTwo\Blog\Exceptions\ArgumentsException;
 
-final class Arguments
+class Arguments
 {
     private array $arguments = [];
+
     public function __construct(iterable $arguments)
     {
         foreach ($arguments as $argument => $value) {
-            // Приводим к строкам
+// Приводим к строкам
             $stringValue = trim((string)$value);
-            // Пропускаем пустые значения
+// Пропускаем пустые значения
             if (empty($stringValue)) {
                 continue;
+
             }
-            // Также приводим к строкам ключ
+// Также приводим к строкам ключ
             $this->arguments[(string)$argument] = $stringValue;
         }
     }
-    // Переносим сюда логику разбора аргументов командной строки
+
+// Переносим сюда логику разбора аргументов командной строки
     public static function fromArgv(array $argv): self
     {
         $arguments = [];
@@ -33,6 +36,10 @@ final class Arguments
         }
         return new self($arguments);
     }
+
+    /**
+     * @throws ArgumentsException
+     */
     public function get(string $argument): string
     {
         if (!array_key_exists($argument, $this->arguments)) {
@@ -42,6 +49,4 @@ final class Arguments
         }
         return $this->arguments[$argument];
     }
-
-    
 }

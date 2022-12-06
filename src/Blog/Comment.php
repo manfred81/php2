@@ -1,97 +1,85 @@
 <?php
 
-namespace App\Blog;
-
+namespace GeekBrains\LevelTwo\Blog;
 
 class Comment
 {
-    
-    private int $id;
-    private User $user;
-    private Post $post;
-    private string $text;
 
-    /**
-     * Get the value of id
-     */
-    public function getId()
+    public function __construct(
+        private UUID $uuid,
+        private User $user,
+        private Post $post,
+        private string $text
+    )
     {
-        return $this->id;
     }
 
     /**
-     * Set the value of id
-     *
-     * @return  self
+     * @return UUID
      */
-    public function setId($id)
+    public function uuid(): UUID
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
-
-        return $this;
     }
 
     /**
-     * Get the value of user
+     * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
     /**
-     * Set the value of user
-     *
-     * @return  self
+     * @param User $user
      */
-    public function setUser($user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
-
-        return $this;
     }
 
     /**
-     * Get the value of post
+     * @return Post
      */
-    public function getPost()
+    public function getPost(): Post
     {
         return $this->post;
     }
 
     /**
-     * Set the value of post
-     *
-     * @return  self
+     * @param Post $post
      */
-    public function setPost($post)
+    public function setPost(Post $post): void
     {
         $this->post = $post;
-
-        return $this;
     }
 
     /**
-     * Get the value of text
+     * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
     /**
-     * Set the value of text
-     *
-     * @return  self
+     * @param string $text
      */
-    public function setText($text)
+    public function setText(string $text): void
     {
         $this->text = $text;
+    }
 
-        return $this;
+    public function __toString() {
+        return $this->user . " пишет Коммент " . $this->text;
     }
-    public function __toString()
-    {
-        return $this->user . "пишет Коммент" . $this->text;
-    }
+
 }

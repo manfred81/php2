@@ -2,7 +2,7 @@
 
 namespace GeekBrains\LevelTwo\Blog\Exceptions;
 
-class InvalidArgumentException extends AppException
+class JsonException extends AppException
 {
 
 }

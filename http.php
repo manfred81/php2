@@ -1,10 +1,66 @@
 <?php
-use App\Blog\Http\Request;
-require_once __DIR__ . '/vendor/autoload.php';
-// Создаём объект запроса из суперглобальных переменных
-$request = new Request($_GET, $_SERVER);
-// Получаем данные из объекта запроса
-$parameter = $request->query('some_parameter');
-$header = $request->header('Some-Header');
-$path = $request->path();
-echo 'Hello from PHP';
+
+use GeekBrains\LevelTwo\Blog\Exceptions\AppException;
+use GeekBrains\LevelTwo\Http\Actions\Users\CreateUser;
+use GeekBrains\LevelTwo\Http\Actions\Users\FindByUsername;
+use GeekBrains\LevelTwo\Http\ErrorResponse;
+use GeekBrains\LevelTwo\Http\Request;
+
+// Подключаем файл bootstrap.php
+// и получаем настроенный контейнер
+$container = require __DIR__ . '/bootstrap.php';
+
+$request = new Request(
+    $_GET,
+    $_SERVER,
+    file_get_contents('php://input'),
+);
+
+try {
+    $path = $request->path();
+} catch (HttpException) {
+    (new ErrorResponse)->send();
+    return;
+}
+
+try {
+    $method = $request->method();
+} catch (HttpException) {
+(new ErrorResponse)->send();
+return;
+}
+
+$routes = [
+    'GET' => [
+        '/users/show' => FindByUsername::class,
+    ],
+    'POST' => [
+        '/users/create' => CreateUser::class,
+    ],
+    'DELETE' => [
+
+    ]
+];
+
+if (!array_key_exists($method, $routes)) {
+    (new ErrorResponse("Route not found: $method $path"))->send();
+    return;
+}
+if (!array_key_exists($path, $routes[$method])) {
+(new ErrorResponse("Route not found: $method $path"))->send();
+return;
+}
+
+// Получаем имя класса действия для маршрута
+$actionClassName = $routes[$method][$path];
+
+// С помощью контейнера
+// создаём объект нужного действия
+$action = $container->get($actionClassName);
+
+try {
+    $response = $action->handle($request);
+} catch (AppException $e) {
+    (new ErrorResponse($e->getMessage()))->send();
+}
+$response->send();
