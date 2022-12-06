@@ -63,4 +63,6 @@ try {
 } catch (AppException $e) {
     (new ErrorResponse($e->getMessage()))->send();
 }
+
+
 $response->send();
