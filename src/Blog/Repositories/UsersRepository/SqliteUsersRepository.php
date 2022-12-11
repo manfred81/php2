@@ -32,17 +32,18 @@ class SqliteUsersRepository implements UsersRepositoryInterface
                    first_name,
                    last_name,
                    uuid,
-                   username)
+                   username,
+                   password)
             VALUES (
                     :first_name, 
                     :last_name,
                     :uuid,
-                    :username
+                    :username,
+                    :password
                     )
                     ON CONFLICT (uuid) DO UPDATE SET
                     first_name = :first_name,
                     last_name = :last_name'
-
         );
         // Выполняем запрос с конкретными значениями
         $statement->execute([
@@ -50,6 +51,7 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             ':last_name' => $user->name()->last(),
             ':uuid' => (string)$user->uuid(),
             ':username' => $user->username(),
+            ':password' => $user->hashedPassword(),
         ]);
 
     }
@@ -104,6 +106,7 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             new UUID($result['uuid']),
             new Name($result['first_name'], $result['last_name']),
             $result['username'],
+            $result['password'],
         );
     }
 

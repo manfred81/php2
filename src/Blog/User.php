@@ -8,17 +8,24 @@ class User
     private UUID $uuid;
     private Name $name;
     private string $username;
+    private string $hashedPassword;
+
 
     /**
      * @param UUID $uuid
      * @param Name $name
      * @param string $login
      */
-    public function __construct(UUID $uuid, Name $name, string $login)
-    {
+    public function __construct(
+        UUID $uuid,
+        Name $name,
+        string $login,
+        string $hashedPassword
+    ){
         $this->uuid = $uuid;
         $this->name = $name;
         $this->username = $login;
+        $this->hashedPassword = $hashedPassword;
     }
 
     public function __toString(): string
@@ -33,8 +40,6 @@ class User
     {
         return $this->uuid;
     }
-
-
 
     /**
      * @return Name
@@ -68,5 +73,34 @@ class User
         $this->username = $username;
     }
 
+    public function hashedPassword(): string
+    {
+        return $this->hashedPassword;
+    }
+
+    private static function hash(string $password, UUID $uuid): string
+    {
+        return hash('sha256',$uuid . $password);
+    }
+
+    public function checkPassword(string $password): bool
+    {
+        return $this->hashedPassword === self::hash($password, $this->uuid);
+    }
+
+    public static function createFrom(
+        string $username,
+        string $password,
+        Name $name
+    ): self
+    {
+        $uuid = UUID::random();
+        return new self(
+            $uuid,
+            $name,
+            $username,
+            self::hash($password, $uuid)
+        );
+    }
 
 }
