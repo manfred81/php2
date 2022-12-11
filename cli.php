@@ -1,24 +1,32 @@
 <?php
 
-use GeekBrains\LevelTwo\Blog\Commands\Arguments;
-use GeekBrains\LevelTwo\Blog\Commands\CreateUserCommand;
-use GeekBrains\LevelTwo\Blog\Exceptions\AppException;
-use Psr\Log\LoggerInterface;
+use GeekBrains\LevelTwo\Blog\Commands\FakeData\PopulateDB;
+use GeekBrains\LevelTwo\Blog\Commands\Posts\DeletePost;
+use GeekBrains\LevelTwo\Blog\Commands\Users\CreateUser;
+use GeekBrains\LevelTwo\Blog\Commands\Users\UpdateUser;
+use Symfony\Component\Console\Application;
 
-
-// Подключаем файл bootstrap.php
-// и получаем настроенный контейнер
 $container = require __DIR__ . '/bootstrap.php';
 
-// При помощи контейнера создаём команду
-$command = $container->get(CreateUserCommand::class);
+// Создаём объект приложения
+$application = new Application();
 
-// Получаем объект логгера из контейнера
-$logger = $container->get(LoggerInterface::class);
+// Перечисляем классы команд
+$commandsClasses = [
+    CreateUser::class,
+    DeletePost::class,
+    UpdateUser::class,
+    PopulateDB::class,
+];
 
+foreach ($commandsClasses as $commandClass) {
+    // Посредством контейнера
+    // создаём объект команды
+    $command = $container->get($commandClass);
 
-try {
-    $command->handle(Arguments::fromArgv($argv));
-} catch (AppException $e) {
-    $logger->error($e->getMessage(), ['exception' => $e]);
+    // Добавляем команду к приложению
+    $application->add($command);
 }
+
+// Запускаем приложение
+$application->run();

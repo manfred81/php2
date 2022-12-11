@@ -16,6 +16,12 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Dotenv\Dotenv;
 
+use Faker\Provider\Lorem;
+use Faker\Provider\ru_RU\Internet;
+use Faker\Provider\ru_RU\Person;
+use Faker\Provider\ru_RU\Text;
+use Faker\Generator;
+
 // Подключаем автозагрузчик Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -92,6 +98,22 @@ $container->bind(
 // С контрактом логгера из PSR-3 ..
     LoggerInterface::class,
     $logger
+);
+
+// Создаём объект генератора тестовых данных
+$faker = new Generator();
+
+// Инициализируем необходимые нам виды данных
+$faker->addProvider(new Person($faker));
+$faker->addProvider(new Text($faker));
+$faker->addProvider(new Internet($faker));
+$faker->addProvider(new Lorem($faker));
+
+// Добавляем генератор тестовых данных
+// в контейнер внедрения зависимостей
+$container->bind(
+    Generator::class,
+    $faker
 );
 
 // Возвращаем объект контейнера

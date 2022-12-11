@@ -78,6 +78,4 @@ try {
     return;
 }
 
-
-
 $response->send();
