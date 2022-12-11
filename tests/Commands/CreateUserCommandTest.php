@@ -2,6 +2,7 @@
 
 namespace GeekBrains\LevelTwo\Commands;
 
+use GeekBrains\Blog\UnitTests\DummyLogger;
 use GeekBrains\LevelTwo\Blog\Commands\Arguments;
 use GeekBrains\LevelTwo\Blog\Commands\CreateUserCommand;
 use GeekBrains\LevelTwo\Blog\Exceptions\ArgumentsException;
@@ -63,17 +64,19 @@ class CreateUserCommandTest extends TestCase
     }
 
 
-    // Тест проверяет, что команда действительно требует фамилию пользователя
     public function testItRequiresLastName(): void
     {
-// Передаём в конструктор команды объект, возвращаемый нашей функцией
-        $command = new CreateUserCommand($this->makeUsersRepository());
+        $command = new CreateUserCommand(
+            $this->makeUsersRepository(),
+            // Тестовая реализация логгера
+            new DummyLogger()
+        );
+
         $this->expectException(ArgumentsException::class);
         $this->expectExceptionMessage('No such argument: last_name');
+
         $command->handle(new Arguments([
             'username' => 'Ivan',
-// Нам нужно передать имя пользователя,
-// чтобы дойти до проверки наличия фамилии
             'first_name' => 'Ivan',
         ]));
     }
@@ -146,5 +149,21 @@ class CreateUserCommandTest extends TestCase
 
         $this->assertTrue($usersRepository->wasCalled());
     }
+
+    public function testItRequiresPassword(): void
+    {
+        $command = new CreateUserCommand(
+            $this->makeUsersRepository(),
+            new DummyLogger()
+        );
+
+        $this->expectException(ArgumentsException::class);
+        $this->expectExceptionMessage('No such argument: password');
+
+        $command->handle(new Arguments([
+            'username' => 'Ivan',
+        ]));
+    }
+
 
 }
